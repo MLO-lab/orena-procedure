@@ -17,16 +17,11 @@ RUN="${RUN:-$REPO/segpro/checkpoints/segpro-27b-joint-all}"
 #   hf download Qwen/Qwen3.6-27B
 BASE="${BASE:?set BASE to a local Qwen/Qwen3.6-27B snapshot directory}"
 
-# The joint run is 2,814 steps over 3 epochs (938 steps/epoch) on 30,000 rows, saved
-# every 50, so no save lands exactly on an epoch boundary. These are the nearest.
-# ep1.4 and ep1.97 are not epoch boundaries. ep1.4 was the newest save while the run
-# was still training; ep1.97 (checkpoint-1850) is where job 250469 hit its 48 h wall,
-# 26 steps short of the epoch-2 boundary at 1876. ep2/ep3 exist only if the run is
-# resumed.
-# ep2.45 is the newest save from the resumed run (job 290989), taken while it is still
-# training toward 3 epochs. ep3 is the final save, which lands in the run ROOT rather
-# than a checkpoint dir -- max_steps 2814 is not a multiple of save_steps 50, so
-# checkpoint-2814 never exists; the last checkpoint dir is 2800.
+# 2,814 steps over 3 epochs (938 steps/epoch) on 30,000 rows, saved every 50, so no save
+# lands exactly on an epoch boundary -- these are the nearest, named by the epoch they
+# reach. ep1.97 (checkpoint-1850) is the shipped model: 26 steps short of the epoch-2
+# boundary at 1876. ep3 is the final save, which lands in the run root rather than a
+# checkpoint dir, because 2814 is not a multiple of save_steps 50.
 declare -A EPOCHS=([ep1]=checkpoint-950 [ep1.4]=checkpoint-1300
                    [ep1.97]=checkpoint-1850
                    [ep2]=checkpoint-1900 [ep2.45]=checkpoint-2300
