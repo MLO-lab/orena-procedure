@@ -91,6 +91,17 @@ podman build -f Dockerfile -t segpro-algorithm:ep1.97 .
 podman save --format docker-archive segpro-algorithm:ep1.97 | gzip > segpro-ep1.97.tar.gz
 ```
 
+Verified end to end on 2026-09-09: `stage_weights.sh` -> `check_vendored.py` (14 checks,
+all pass) -> `podman build` (25 layers) -> `Successfully tagged`.
+
+Two notes for rootless Podman without a `/etc/subuid` range for your account:
+
+- add `--storage-opt overlay.ignore_chown_errors=true --cgroup-manager=cgroupfs`, and put
+  `--root`/`--runroot` on local disk — the build context is ~52 GB
+- the image ends with `USER user`, so `podman run` needs `--user 0` or it fails with
+  `crun: cannot setresgid to '999'`. This affects running the image locally only; the
+  evaluation platform maps users properly.
+
 `check_vendored.py` is worth running before every build. `container/resources/` holds
 copies of five training modules, and a copy that silently drifts from its original changes
 the prompt or the frame grid without changing anything visible. The check replays the

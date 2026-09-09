@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 pytorch/pytorch:2.9.1-cuda12.8-cudnn9-runtime AS deps
+FROM --platform=linux/amd64 docker.io/pytorch/pytorch:2.9.1-cuda12.8-cudnn9-runtime AS deps
 
 # The template recommends 2.11.0-cuda12.8. This is the same image line one torch minor
 # back, and the swap is deliberate: measured on the same node, same weights, same
