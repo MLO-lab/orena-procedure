@@ -1,8 +1,8 @@
 __pycache__/
 *.py[cod]
 .venv/
-segpro/sft_export_segpro/
-segpro/checkpoints/
+segpro/sft_export_segpro
+segpro/checkpoints
 container/resources/base_model/
 container/resources/adapter/
 container/resources/adapters/
