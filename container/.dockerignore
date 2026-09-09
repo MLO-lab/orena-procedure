@@ -1,0 +1,4 @@
+*.tar.gz
+test/
+__pycache__/
+resources/adapters/

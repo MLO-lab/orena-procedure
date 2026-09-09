@@ -1,0 +1,41 @@
+# Pins the torch already in the base image. Nothing is downloaded -- pip treats the
+# preinstalled build as satisfying this. Its job is to turn "a dependency of mine wants
+# a different torch" into an immediate pip error naming that dependency, rather than a
+# silent swap to a wheel built for another CUDA. That swap is not hypothetical: it is
+# what made the FRAME submission run a 9B model on CPU.
+torch==2.9.1
+
+# The training stack, pinned to what this checkpoint was trained and evaluated with.
+transformers==5.9.0
+accelerate==1.14.0
+peft==0.19.1
+
+# Request/Response, and FOType.names() -- which the system prompt is built from.
+# foreign_objects.py is byte-identical in 0.3.4 (training) and 0.3.5.
+orena-focus==0.3.5
+
+# flash-linear-attention is deliberately ABSENT. It is not a close call, and the reason
+# is NOT the one that excluded it from the SEGMENT track. Measured on the same 5-question
+# batch, same image otherwise:
+#
+#     without fla   80 s wall   generate 8.3 s (768 frames), 0.7 s (66 frames)
+#     with fla     136 s wall   generate 4.2 s STEADY STATE, but +7-8 s of triton JIT
+#                               for every distinct frame count in the batch
+#
+# fla's kernels really are ~2x faster once compiled -- the repeated 768-frame question
+# came back at 4.22 s, exactly the venv's figure. But triton compiles per shape, `/tmp`
+# is fresh every container run so nothing is cached between runs, and PROCEDURE questions
+# have a different frame count almost every time (the sampler caps at 768 but short
+# windows use far fewer). The 66-frame question cost 9.05 s to generate with fla against
+# 0.70 s without: a 13x regression on the cheapest question in the batch.
+#
+# It also drags in a runtime dependency on a C compiler: triton JIT-compiles its CUDA
+# driver shim on first use, and without build-essential the run dies with "Failed to find
+# C compiler" AFTER the model has loaded.
+#
+# inference.py logs which path is live, so a future change is visible in the job log.
+
+# Direct imports of inference.py and resources/.
+av>=15.0
+numpy>=1.23.0
+pillow>=9.0

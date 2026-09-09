@@ -1,0 +1,74 @@
+{
+  "_comment": "Fully resolved config of the run that produced checkpoint-1850 (the epoch-2 segpro model). Defaults expanded. Reproduce with segpro/train_segpro_27b_fsdp.slurm, ARM=joint-all.",
+  "run_name": "segpro-27b-joint-all",
+  "model_id": "Qwen/Qwen3.6-27B",
+  "arm": "joint-all",
+  "train_file": "segpro/sft_export_segpro/joint_all.jsonl",
+  "train_rows": 30000,
+  "seed": 42,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "optim": {
+    "lr": 0.0001,
+    "schedule": "linear decay to 0 over max_steps"
+  },
+  "batch": {
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "num_gpus": 8,
+    "effective_batch_size": 32
+  },
+  "epochs": 3,
+  "max_steps": 2814,
+  "steps_per_epoch": 938,
+  "save_strategy": "steps",
+  "save_steps": 50,
+  "save_total_limit": null,
+  "eval_strategy": "no",
+  "frames": {
+    "procedure_n_max": 576,
+    "segment_n_max": 96,
+    "_note": "Set by build_segpro_sft_dataset.py --procedure-frames / --segment-frames, NOT by sampling.DEFAULT_N_MAX (which is 768 in the training tree and is never consulted for this export). frames_indices are baked into the export, so these caps are fixed at dataset-build time.",
+    "frame_size_wh": [
+      512,
+      288
+    ],
+    "fps": 5.0,
+    "video_total_pixel_budget": 235929600
+  },
+  "distributed": {
+    "strategy": "fsdp_full_shard",
+    "wrap_classes": [
+      "Qwen3_5DecoderLayer",
+      "Qwen3_5VisionBlock"
+    ],
+    "activation_checkpointing": "in fsdp_config, NOT TrainingArguments"
+  },
+  "checkpoint_shipped": {
+    "dir": "checkpoint-1850",
+    "global_step": 1850,
+    "epoch": 1.9728,
+    "note": "the run hit its 48 h wall 26 steps short of the epoch-2 boundary at 1876; this IS the epoch-2 model"
+  },
+  "inference": {
+    "stage1_n_max": 576,
+    "stage2_frames": 384,
+    "zoom_half_width_s": 300.0,
+    "zoom_dense_frac": 0.65,
+    "zoom_min_marker_gap_s": 4.4,
+    "budget_target": 0.97,
+    "max_new_tokens": 160
+  }
+}

@@ -1,0 +1,23 @@
+# Training environment for the epoch-2 segpro run (checkpoint-1850).
+# Exact versions from the venv that produced it; the complete freeze is in
+# configs/pip-freeze-train.txt.
+#
+# torch is installed separately against the cluster's CUDA 12.8:
+#   pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cu128
+
+transformers==5.9.0
+trl==1.8.0
+peft==0.19.1
+accelerate==1.14.0
+datasets==4.8.5
+orena-focus==0.3.4
+numpy==2.4.6
+av==18.1.0
+decord==0.6.0
+wandb==0.27.0
+
+# Training only. Deliberately NOT installed in the inference container: its kernels are
+# ~2x faster once compiled, but triton recompiles per input shape with nothing cached
+# between container runs, and procedure frame counts vary per question -- measured 136 s
+# against 80 s over the same batch. See container/requirements.txt.
+flash-linear-attention==0.5.2
