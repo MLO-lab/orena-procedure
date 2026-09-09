@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -39,7 +40,7 @@ import numpy as np
 from focus import DatasetSplit, FocusConfig, FocusDataset, Track, set_config
 from focus.config import DATASET_BASE_FPS
 
-DEFAULT_ROOT_DIR = Path("/projects/datasets_ML/orena/")
+DEFAULT_ROOT_DIR = Path(os.environ.get("ORENA_DATA_ROOT", ""))
 DEFAULT_OUT_DIR = Path(__file__).resolve().parent / "sft_export"
 
 

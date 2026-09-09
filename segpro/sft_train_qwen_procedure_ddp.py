@@ -11,7 +11,7 @@ frames), so peak memory is set by the longest window in a batch, not by every ba
 
 Usage (see the .slurm wrapper):
     torchrun --standalone --nproc_per_node=8 \\
-        procedure_track/sft_train_qwen_procedure_ddp.py --run-name procedure-9b-n768
+        segpro/sft_train_qwen_procedure_ddp.py --run-name procedure-9b-n768
 """
 
 from __future__ import annotations
@@ -192,7 +192,7 @@ def build_parser() -> argparse.ArgumentParser:
                     help="defaults to <script-dir>/checkpoints/<run_name>")
     # 9B, not the 27B: 96 GB fits either at inference, but at equal training cost the
     # 9B affords N_max=768 against the 27B's 256 -- 3x the temporal resolution on the
-    # one axis this track is hard along. See plan.md §2.2.
+    # one axis this track is hard along.
     ap.add_argument("--model-id", default="Qwen/Qwen3.5-9B")
     ap.add_argument("--epochs", type=float, default=2.0,
                     help="upper bound; early stopping or --max-steps ends the run")
@@ -238,11 +238,11 @@ def build_parser() -> argparse.ArgumentParser:
                     help="WxH each frame is resized to; MUST match evaluation")
     ap.add_argument("--dataloader-workers", type=int, default=16,
                     help="up to 768 JPEG reads per sample over NFS are latency-bound "
-                         "and parallelise well; see plan.md §2.7")
+                         "and parallelise well")
     ap.add_argument("--frames-root", default=None,
                     help="re-root the exported frame_dir paths onto this filesystem, "
                          "for running an export built on another cluster "
-                         "(e.g. /mnt/vast/workspaces/VL_LeJepa/data/orena)")
+                         "(the directory holding <dataset>/frames_overlay/)")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--resume-from-checkpoint", default=None,
                     help="path to a checkpoint-N dir, or 'auto' for the latest in "

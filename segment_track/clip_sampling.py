@@ -6,7 +6,7 @@ pixels and the same `VideoMetadata`, or training and inference silently disagree
 about what the model was shown -- and, because Qwen3-VL derives its per-frame
 timestamp markers from that metadata, about what time it is in the video.
 
-Two rules the processor imposes (see segment_track/plan.md §2.7):
+Two rules the processor imposes:
   * `n_frames` must be even -- `temporal_patch_size=2` fuses frames in pairs.
   * `frames_indices` must be ABSOLUTE indices into the source video, and `fps`
     must be the real fps, or the rendered `<... seconds>` markers are wrong.

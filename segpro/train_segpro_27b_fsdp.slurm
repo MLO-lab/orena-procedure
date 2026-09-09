@@ -25,9 +25,8 @@
 # eval_segpro.slurm. That is the shipped procedure recipe, unchanged.
 set -euo pipefail
 
-# Under sbatch, BASH_SOURCE points at Slurm's spool copy of this script (job 249617 died
-# trying to mkdir logs/ in /var/spool/slurmd), so the submit directory is the anchor;
-# the script's own location is the fallback when it is run directly.
+# Under sbatch, BASH_SOURCE points at Slurm's spool copy of this script, so the submit
+# directory is the anchor; the script's own location is the fallback when run directly.
 if [[ -z "${EXP_ROOT:-}" ]]; then
     if [[ -n "${SLURM_SUBMIT_DIR:-}" && -d "$SLURM_SUBMIT_DIR/segpro" ]]; then
         EXP_ROOT="$SLURM_SUBMIT_DIR"
@@ -60,7 +59,7 @@ case "$ARM" in
 esac
 
 MODEL_ID="${MODEL_ID:-Qwen/Qwen3.6-27B}"
-DATA_ROOT="${DATA_ROOT:-/mnt/vast/workspaces/VL_LeJepa/data/orena}"
+DATA_ROOT="${DATA_ROOT:?set DATA_ROOT to the directory holding <dataset>/frames_overlay/}"
 RUN_NAME="${RUN_NAME:-segpro-27b-$ARM}"
 EXTRA_ARGS="${EXTRA_ARGS:-}"
 

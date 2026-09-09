@@ -3,7 +3,7 @@
 Everything here is a pure function of `(window, question, n_max)`. It runs twice --
 once at export time against native-fps JPEGs, once inside the submission container
 against a 5 fps MP4 -- and the two MUST agree, so this module is the single source of
-truth for both. See procedure_track/plan.md §2.1-§2.3.
+truth for both.1-§2.3.
 
 Indices are always ABSOLUTE positions on a 5 fps grid over the source procedure, which
 makes `index / 5.0` the real time-of-operation the model is asked to answer in. The

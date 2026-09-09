@@ -33,12 +33,9 @@ from collate import ASSISTANT_MARKER, with_system  # noqa: E402,F401 (re-exporte
 
 from sampling import DEFAULT_FRAME_SIZE, FPS, native_lookup_index  # noqa: E402
 
-# The two clusters this pipeline runs on. Scripts and tests that need pixels detect
-# whichever root exists instead of hardcoding one cluster's mount.
-KNOWN_DATA_ROOTS = (
-    "/projects/datasets_ML/orena",
-    "/mnt/vast/workspaces/VL_LeJepa/data/orena",
-)
+# Set ORENA_DATA_ROOT to the directory holding <dataset>/frames_overlay/, or pass
+# --frames-root. Add local mounts here to have them detected automatically.
+KNOWN_DATA_ROOTS: tuple[str, ...] = ()
 
 
 def detect_data_root() -> str | None:

@@ -3,7 +3,7 @@
 Everything here is a pure function of `(window, question, n_max)`. It runs twice --
 once at export time against native-fps JPEGs, once inside the submission container
 against a 5 fps MP4 -- and the two MUST agree, so this module is the single source of
-truth for both. See procedure_track/plan.md §2.1-§2.3.
+truth for both.1-§2.3.
 
 Indices are always ABSOLUTE positions on a 5 fps grid over the source procedure, which
 makes `index / 5.0` the real time-of-operation the model is asked to answer in. The
@@ -30,7 +30,7 @@ DEFAULT_N_MAX = 768
 # 512x288, not the segment track's 640x360: at 768 frames the latter is 89.6k tokens
 # and OOMs an 80 GB H100, while this is 60.4k tokens at 65.6 GB peak. The burned-in
 # clock stays legible (checked on the worst case, natively-1280x720 lapchole), so the
-# frame budget is worth more than the pixels -- see plan.md §2.2.
+# frame budget is worth more than the pixels
 DEFAULT_FRAME_SIZE = (512, 288)
 DEFAULT_DENSE_FRAC = 0.5
 

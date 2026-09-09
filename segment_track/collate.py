@@ -5,7 +5,7 @@ render a clip identically -- the frame track learned this the hard way: the mome
 two paths disagree about what the model is shown, every number becomes a
 train/inference mismatch.
 
-Two processor contracts this file exists to enforce (segment_track/plan.md §2.7):
+Two processor contracts this file exists to enforce:
   * `do_sample_frames=False` -- otherwise the video processor RE-SAMPLES the
     already-sampled frames using indices derived from `total_num_frames`, which
     either raises IndexError or silently overwrites `frames_indices`.

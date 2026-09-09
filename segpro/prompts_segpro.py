@@ -1,8 +1,6 @@
 """The joint SEGMENT+PROCEDURE system prompt.
 
-Forked from `procedure_track/prompts_procedure.py` and deliberately kept out of it: that
-module is load-bearing for the shipped 27B, and this experiment must not be able to move
-it. `extract_answer` is track-agnostic and is still imported from the shared module.
+`extract_answer` is track-agnostic and is imported from the shared `prompts` module.
 
 The one substantive change is scope. Both tracks ask the same questions -- 703 question
 strings appear verbatim in both, and shared templates cover 85% of procedure rows and

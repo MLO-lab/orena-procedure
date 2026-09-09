@@ -1,17 +1,13 @@
 """LoRA SFT of Qwen3.6-27B for the procedure track, FSDP across 8 GPUs.
 
-Separate from the 9B trainer because the 27B needs two things the 9B does not:
+FSDP rather than DDP: 52 GB of frozen weights plus ~36 GB of checkpointed activations
+does not fit in 80 GB, and DDP replicates the weights on every rank. Full sharding puts
+6.5 GB of weights on each GPU instead.
 
-  * FSDP. 52 GB of frozen weights plus ~36 GB of checkpointed activations does not fit
-    in 80 GB, and DDP replicates the weights on every rank. Full sharding puts 6.5 GB of
-    weights on each GPU instead.
-  * Fewer frames. Sharding only helps the weights; activations scale with sequence
-    length, so the export is rebuilt at --num-frames 512 (36,864 visual tokens).
-
-Trains on ALL data with no held-out split, so there is no eval loss and no early
+Trains on all data with no held-out split, so there is no eval loss and no early
 stopping -- checkpoints are saved on a fixed step interval and chosen afterwards.
 
-    sbatch procedure_track/train_qwen27b_procedure_fsdp.slurm
+    sbatch segpro/train_segpro_27b_fsdp.slurm
 """
 
 from __future__ import annotations

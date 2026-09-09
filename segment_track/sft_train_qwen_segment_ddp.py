@@ -333,7 +333,7 @@ def build_parser() -> argparse.ArgumentParser:
                     help="WxH each frame is resized to; MUST match evaluation")
     ap.add_argument("--dataloader-workers", type=int, default=16,
                     help="64 JPEG reads per sample over NFS are latency-bound and "
-                         "parallelise well; see segment_track/plan.md §2.6")
+                         "parallelise well")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--wandb-project", default="orena-segment-sft")
     ap.add_argument("--run-name", default=None)

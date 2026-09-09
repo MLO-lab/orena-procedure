@@ -46,7 +46,10 @@ from collate_procedure import detect_data_root  # noqa: E402
 from prompts_segpro import window_line  # noqa: E402
 from sampling import describe, parse_question_timestamps, sample_indices_5fps  # noqa: E402
 
-DEFAULT_ROOT_DIR = Path(detect_data_root() or "/projects/datasets_ML/orena/")
+_ROOT = detect_data_root()
+if _ROOT is None:
+    raise SystemExit("set ORENA_DATA_ROOT to the directory holding <dataset>/frames_overlay/")
+DEFAULT_ROOT_DIR = Path(_ROOT)
 DEFAULT_OUT_DIR = EXP_DIR / "sft_export_segpro"
 
 TRACKS = {"procedure": Track.PROCEDURE, "segment": Track.SEGMENT}
