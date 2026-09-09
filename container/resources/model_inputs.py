@@ -3,11 +3,10 @@
 Deliberately depends on nothing the training export carried. `frames_indices` is
 recomputed from `(start_time, end_time, question)` by the same `sampling.py` the export
 used, the pixels come from the delivered 5 fps clip, and the metadata is built on that
-same 5 fps timeline. Verified against all 10,000 exported rows -- see
-`procedure_track/phase0/FINDINGS.md`.
+same 5 fps timeline.
 
-`build_metadata`, `with_system` and `_encode` are copied from `segment_track/` and
-`procedure_track/collate_procedure.py`; `check_vendored.py` asserts they still match.
+`build_metadata`, `with_system` and `encode` are copied from `segment_track/clip_sampling.py`
+and `segpro/collate_procedure.py`; `check_vendored.py` asserts they still match.
 """
 
 from __future__ import annotations

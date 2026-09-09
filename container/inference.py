@@ -6,17 +6,10 @@ clip of at most 5 minutes on SEGMENT -- delivered at 5 fps with a clock burned i
 every frame. The clock stays absolute on a trimmed segment clip, so both tracks are
 read the same way; `window_line(start, end)` tells the model which span it is seeing.
 
-The shape of a run:
-
-    setup      import, load the model once, merge the adapter, fork the decode pool,
-               warm up one generation                                    (~90 s)
-    question   recompute the frame grid -> decode those frames -> encode -> greedy
-               generate -> parse                                    (~13 s worst case)
-
-Why the frame grid is recomputed rather than shipped: `resources/sampling.py` is the
-same module that chose the frames at training-export time, and it is a pure function of
-`(start_time, end_time, question)` -- all three of which arrive in the Request. Checked
-against all 10,000 exported rows; see procedure_track/phase0/FINDINGS.md.
+The frame grid is recomputed rather than shipped: `resources/sampling.py` is the same
+module that chose the frames at training-export time, and it is a pure function of
+`(start_time, end_time, question)` -- all three of which arrive in the Request.
+`check_vendored.py` verifies this against every exported row.
 
 Clips are read from `overlayed/`, not `plain/`: the model was trained on frames with the
 clock burned in, and the system prompt tells it to read that clock.

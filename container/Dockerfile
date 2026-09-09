@@ -14,16 +14,10 @@ FROM --platform=linux/amd64 docker.io/pytorch/pytorch:2.9.1-cuda12.8-cudnn9-runt
 
 ENV PYTHONUNBUFFERED=1
 
-# The caching allocator hands back fixed-size blocks, so a workload whose tensors change
-# shape every question strands memory inside partly-used blocks. The 820-frame OOM died
-# needing 754 MiB while holding 7.99 GiB reserved-but-unallocated. Expandable segments
-# grow and shrink instead, recovering that. Peak at 768 frames measured 68.3 GiB of an
-# H100's 79.2 (procedure_track/phase0 bench, job 288757), and phase 0 puts the built
-# image ~4.4 GiB above the bench environment -- thin enough to want this.
-#
-# Purely an allocation strategy: identical tensors, identical arithmetic, identical
-# answers. Both spellings are set because phase 0 6.5 found the new name alone did not
-# take effect (a run still showed 8.42 GB stranded).
+# Frame counts vary per question, so the caching allocator strands memory inside
+# partly-used blocks; expandable segments recover it. Purely an allocation strategy --
+# identical tensors, identical answers. Both spellings are set because the new name
+# alone did not take effect.
 ENV PYTORCH_ALLOC_CONF=expandable_segments:True \
     PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 

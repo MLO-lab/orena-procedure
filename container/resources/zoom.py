@@ -4,8 +4,6 @@ The window and the prompt are unchanged -- only `frames_indices` differ -- so st
 still looks like the question-anchored rows the model trains on rather than an
 out-of-distribution sub-clip. `to_seconds` doubles as the router: a stage-1 answer that
 parses as HH:MM:SS is a `time` answer and gets a second pass.
-
-Copied from procedure_track/two_stage_eval.py, where the sweep behind these defaults is.
 """
 
 from __future__ import annotations

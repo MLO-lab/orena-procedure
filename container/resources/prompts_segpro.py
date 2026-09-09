@@ -1,6 +1,6 @@
 """The joint SEGMENT+PROCEDURE system prompt, vendored for the container.
 
-Identical to `orena_segpro/segpro/prompts_segpro.py`, which is what the adapter was
+Identical to `segpro/prompts_segpro.py`, which is what the adapter was
 trained with, except that `extract_answer` is inlined below -- the container cannot
 import `orena_sft/prompts.py`. `check_vendored.py` asserts both halves still match
 their originals.
