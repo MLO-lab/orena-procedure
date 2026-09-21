@@ -14,6 +14,17 @@ is the epoch-2 model.
 | single pass | 0.6320 |
 | **two-stage zoom** (this repo) | **0.6379** |
 
+## Model weights
+
+- **Merged model** (LoRA folded into the base, loads with plain `transformers`):
+  https://huggingface.co/Machine-Learning-Oncology/SegPro-Zoom-Qwen3.6-27B
+- **LoRA adapter and submission images**:
+  https://huggingface.co/Machine-Learning-Oncology/segpro-qwen3.6-27B — adapter under
+  `ep1.97/`, container archives under `images/`
+
+The zoom is inference-time logic in `container/`, not part of the weights; loading the
+merged model alone gives the single-pass behaviour.
+
 ## Layout
 
 ```
@@ -137,8 +148,7 @@ Two guards:
 
 ## Not included
 
-Model weights, base model, datasets and built images. Adapters and submission images are
-published at `Machine-Learning-Oncology/segpro-qwen3.6-27B`.
+Model weights (see *Model weights* above), the base model, datasets and built images.
 
 Training used `orena-focus==0.3.4`; the container installs `0.3.5`
 (`container/requirements.txt`). That package supplies the Request/Response types and the
