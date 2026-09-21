@@ -16,14 +16,10 @@ is the epoch-2 model.
 
 ## Model weights
 
-- **Merged model** (LoRA folded into the base, loads with plain `transformers`):
-  https://huggingface.co/Machine-Learning-Oncology/SegPro-Zoom-Qwen3.6-27B
-- **LoRA adapter and submission images**:
-  https://huggingface.co/Machine-Learning-Oncology/segpro-qwen3.6-27B — adapter under
-  `ep1.97/`, container archives under `images/`
-
-The zoom is inference-time logic in `container/`, not part of the weights; loading the
-merged model alone gives the single-pass behaviour.
+The LoRA adapter and the submitted container images are at
+https://huggingface.co/Machine-Learning-Oncology/segpro-qwen3.6-27B — the adapter under
+`ep1.97/` (checkpoint-1850), the container archives under `images/`. The base model is
+`Qwen/Qwen3.6-27B`.
 
 ## Layout
 
